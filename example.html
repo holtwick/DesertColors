@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="desertcolors.css">
+    <style media="screen" type="text/css">
+        body {
+            color: var(--label-color);
+            background: var(--control-background-color);
+        }
+        .secondary {
+            color: var(--secondary-label-color);
+        }
+        .tertiary {
+            color: var(--tertiary-label-color);
+        }
+    </style>
+    <script>
+        function toggleMode() {
+            var value = document.body.parentElement.dataset['mode']
+            document.body.parentElement.dataset['mode'] = value === 'dark' ? 'light' : 'dark'
+        }
+    </script>
+</head>
+<body>
+
+    <div>Test</div>
+    <div class="secondary">Test</div>
+    <div class="tertiary">Test</div>
+
+    <button onclick="toggleMode(); return false;">Toggle</button>
+
+</body>
+</html>
