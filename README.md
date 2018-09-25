@@ -4,5 +4,7 @@ Since macOS 10.14 Mojave different **visual modes like [dark](https://developer.
 
 To adopt these [colors](https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/color/) for **web development** it is useful to get access to their **color values for use in CSS**. That's what DesertColor is providing.
 
+`dessertcolor.css` contains these extracted colors. With `<html data-mode="dark">` the dark variant is used, otherwise the light one. 
+
 But be aware, that [Dark Mode](https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/dark-mode/) in Mojave is not only about plain colors and that there is more like "Desktop Tinting" or "Translucency".
 
