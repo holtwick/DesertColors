@@ -124,7 +124,7 @@
             id lessName = [NSString stringWithFormat:@"%@%@", [name substringToIndex:1].capitalizedString, [name substringFromIndex:1]];
             [lessLines addObject:[NSString stringWithFormat:@"  @%@%@: %@;", isDark ? @"dark" : @"light", lessName, rgba]];
 
-            [jsLines addObject:[NSString stringWithFormat:@"  %@: '%@',", name, rgba]];
+            [jsLines addObject:[NSString stringWithFormat:@"  %@: '%@',", [name stringByReplacingOccurrencesOfString:@"Color" withString:@""], rgba]];
         }
         else {
             NSLog(@"Unknown color: %@", name);
