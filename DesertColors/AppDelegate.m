@@ -94,31 +94,45 @@
                              //                             @"selectedMenuItemColorDeprecated",
                              //                             @"windowFrameColorDeprecated",
                              ];
-    NSMutableArray *lines = [NSMutableArray array];
+
+
+    NSAppearanceName appearanceName = [NSApp.effectiveAppearance bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]];
+    BOOL isDark = [appearanceName isEqualToString:NSAppearanceNameDarkAqua];
+
+    NSMutableArray *cssLines = [NSMutableArray array];
+    NSMutableArray *lessLines = [NSMutableArray array];
+    NSMutableArray *jsLines = [NSMutableArray array];
     for (NSString *name in colorNames) {
         NSColor *color = [NSColor performSelector:NSSelectorFromString(name)];
         if (color) {
             NSLog(@"Color %@: %@", name, color);
             color = [color colorUsingColorSpace:[NSColorSpace sRGBColorSpace]];
-            NSString *rgba = [NSString stringWithFormat:@"rgba(%@, %@, %@, %@)",
-                              @(255 * color.redComponent),
-                              @(255 * color.greenComponent),
-                              @(255 * color.blueComponent),
-                              @(color.alphaComponent)];
+            NSString *rgba = [NSString stringWithFormat:@"rgba(%.0f, %.0f, %.0f, %.3f)",
+                              round(255 * color.redComponent),
+                              round(255 * color.greenComponent),
+                              round(255 * color.blueComponent),
+                              color.alphaComponent];
             NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[A-Z]" options:0 error:nil];
+
             NSMutableString *cssname = [NSMutableString stringWithString:name];
             [regex replaceMatchesInString:cssname
                                   options:0
                                     range:NSMakeRange(0, name.length)
                              withTemplate:@"-$0"];
-            [lines addObject:[NSString stringWithFormat:@"  --%@: %@;", cssname.lowercaseString, rgba]];
+            [cssLines addObject:[NSString stringWithFormat:@"  --%@: %@;", cssname.lowercaseString, rgba]];
+
+            id lessName = [NSString stringWithFormat:@"%@%@", [name substringToIndex:1].capitalizedString, [name substringFromIndex:1]];
+            [lessLines addObject:[NSString stringWithFormat:@"  @%@%@: %@;", isDark ? @"dark" : @"light", lessName, rgba]];
+
+            [jsLines addObject:[NSString stringWithFormat:@"  %@: '%@',", name, rgba]];
         }
         else {
             NSLog(@"Unknown color: %@", name);
         }
     }
-    id s = [lines componentsJoinedByString:@"\n"];
-    NSLog(@"Colors:\n%@", s);
+    NSLog(@"CSS:\n%@", [cssLines componentsJoinedByString:@"\n"]);
+    NSLog(@"LESS:\n%@", [lessLines componentsJoinedByString:@"\n"]);
+    NSLog(@"JS:\n%@", [jsLines componentsJoinedByString:@"\n"]);
 }
 
 
